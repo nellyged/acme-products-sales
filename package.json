@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:db": "DATABASE_URL=postgres://localhost/acme_products_sales nodemon ./db/index.js"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +12,7 @@
   "dependencies": {
     "express": "^4.16.4",
     "morgan": "^1.9.1",
+    "nodemon": "^1.18.10",
     "path": "^0.12.7",
     "pg": "^7.9.0",
     "sequelize": "^5.1.0"
