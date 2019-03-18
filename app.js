@@ -11,13 +11,47 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+//Point traffic to the single html file
+app.get('/', (req, res, next) =>
+  res.sendFile(path.join(__dirname, 'client', 'index.html'))
+);
+
+//Bundle.js created by webpack will be found in public folder
+app.use(express.static(path.join(__dirname, 'public')));
+
 //GET /api/products get all the products
-app.get('/api/', (req, res, next) => {
+app.get('/api/products', (req, res, next) => {
   Product.findAll()
     .then(products => {
       res.send(products);
     })
     .catch(next);
+});
+
+//POST /api/products create new product
+app.post('/api/products', (req, res, next) => {
+  Product.create(req.body).then(prod => {
+    res.send(prod);
+  });
+});
+
+//DELETE /api/products remove a product
+app.delete('/api/products/:id', (req, res, next) => {
+  Product.destroy({
+    where: {
+      id: req.params.id,
+    },
+  })
+    .then(() => {
+      res.sendStatus(204);
+    })
+    .catch(next);
+});
+
+app.use((req, res, next) => {
+  const err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
 app.use((err, req, res, next) => {
