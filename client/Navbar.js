@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Navbar = ({ location: { pathname } }) => {
-  console.log(pathname);
+const Navbar = ({ location: { pathname }, counts }) => {
   const links = [
     {
       title: 'Home',
@@ -30,6 +29,16 @@ const Navbar = ({ location: { pathname } }) => {
             className={`nav-link${link.path === pathname ? ' active' : ''}`}
           >
             {link.title}
+            {link.path === '/products' || link.path === '/sales' ? (
+              <span
+                className="badge badge-primary"
+                style={{ marginLeft: '10px' }}
+              >
+                {counts[link.path]}
+              </span>
+            ) : (
+              ''
+            )}
           </Link>
         </li>
       ))}

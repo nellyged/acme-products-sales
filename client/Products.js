@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Products = ({ products }) => {
+const Products = ({ products, destroyProd }) => {
   return (
     <ul className="list-group">
       {products.map(product => (
@@ -20,11 +20,23 @@ const Products = ({ products }) => {
               ''
             )}
           </div>
-          <span className="badge badge-success" style={{ marginBottom: '5px' }}>
+          <span
+            className={
+              product.availability === 'instock'
+                ? 'badge badge-success'
+                : 'badge badge-warning'
+            }
+            style={{ marginBottom: '5px' }}
+          >
             {product.availability}
           </span>
           <br />
-          <button className="btn btn-danger btn-sm">Delete</button>
+          <button
+            className="btn btn-danger btn-sm"
+            onClick={() => destroyProd(product.id)}
+          >
+            Delete
+          </button>
         </li>
       ))}
     </ul>

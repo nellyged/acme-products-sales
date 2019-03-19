@@ -30,9 +30,11 @@ app.get('/api/products', (req, res, next) => {
 
 //POST /api/products create new product
 app.post('/api/products', (req, res, next) => {
-  Product.create(req.body).then(prod => {
-    res.send(prod);
-  });
+  Product.create(req.body)
+    .then(prod => {
+      res.send(prod);
+    })
+    .catch(next);
 });
 
 //DELETE /api/products remove a product

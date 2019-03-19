@@ -7,7 +7,7 @@
     "postinstall": "./node_modules/webpack/bin/webpack.js",
     "webpack": "webpack",
     "webpack:dev": "npm run webpack -- --mode=development --watch",
-    "start:dev": "npm run webpack:dev & npm run start:server --ignore client/ --ignore public/",
+    "start:dev": "npm run webpack:dev & DATABASE_URL=postgres://localhost/acme_products_sales nodemon ./server.js --ignore client/ --ignore public/",
     "start:db": "DATABASE_URL=postgres://localhost/acme_products_sales nodemon ./db/index.js",
     "start:server": "DATABASE_URL=postgres://localhost/acme_products_sales nodemon ./server.js"
   },
