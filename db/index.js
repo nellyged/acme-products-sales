@@ -9,8 +9,10 @@ const Product = conn.define(
     name: {
       type: Sequelize.STRING,
       allowNull: false,
-      isEmpty: false,
       unique: true,
+      validate: {
+        notEmpty: true,
+      },
     },
     price: {
       type: Sequelize.DECIMAL,
@@ -34,8 +36,18 @@ const Product = conn.define(
   {
     hooks: {
       beforeValidate: product => {
-        if (product.discount === '') {
+        if (product.discountPer) {
+          product.discount =
+            product.price - (product.price * product.discountPer) / 100;
+        } else {
           product.discount = null;
+          product.discountPer = null;
+        }
+        if (
+          product.discountPer &&
+          (product.discountPer >= 100 || product.discountPer <= 0)
+        ) {
+          throw new Error('Percentage cant be higher than 99 or lower than 1');
         }
       },
     },
@@ -48,7 +60,7 @@ const syncAndSeed = () => {
       Product.create({
         name: 'Foo',
         price: 3,
-        discount: 2.4000000000000004,
+        discountPer: 60,
         availability: 'instock',
       }),
       Product.create({

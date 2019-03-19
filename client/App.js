@@ -25,7 +25,7 @@ export default class App extends Component {
       });
   }
   onSave = product => {
-    //we have a return here becasue after we create we want to complete more steps so this must be returned so it can handed off down the promise chain
+    //a return here becasue after we create we want to complete more steps so this must be returned so it can handed off down the promise chain
     return axios.post('/api/products', product).then(() => this.loadData());
   };
   destroyProd = id => {
@@ -39,6 +39,10 @@ export default class App extends Component {
       '/products': products.length,
       '/sales': products.filter(product => product.discount).length,
     };
+    const names = products.reduce((acc, prod) => {
+      acc.push(prod.name);
+      return acc;
+    }, []);
     return (
       <div className="container">
         <HashRouter>
@@ -67,7 +71,11 @@ export default class App extends Component {
             <Route
               path="/create"
               render={({ history }) => (
-                <ProductCreate history={history} onSave={onSave} />
+                <ProductCreate
+                  history={history}
+                  onSave={onSave}
+                  names={names}
+                />
               )}
             />
             <Redirect to="/home" />
